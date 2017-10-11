@@ -4,25 +4,17 @@ var express = require('express')
   , os = require('os');
 
 var connections = []
-  , votes = {yes: 0, no: 0}
 
-app.engine('jade', require('jade').__express) //__
+app.engine('jade', require('jade').__express)
 app.set('view engine', 'jade')
-
 app.use(sse)
-
-
 
 app.get('/stream', function(req, res) {
     res.sseSetup()
     setInterval(function() {
-    //let time = new Date().toLocaleTimeString()
-    //let cpu =os.cpus();
-    let cpu =os.loadavg()
+    let cpu =os.cpus();
     res.sseSend(cpu)
   }, 5000)
-
-
   connections.push(res)
 })
 
