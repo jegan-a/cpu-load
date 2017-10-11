@@ -14,7 +14,7 @@ app.get('/stream', function(req, res) {
     setInterval(function() {
     let cpu =os.cpus();
     res.sseSend(cpu)
-  }, 5000)
+  }, 2000)
   connections.push(res)
 })
 
