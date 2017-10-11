@@ -16,8 +16,10 @@ app.use(sse)
 app.get('/stream', function(req, res) {
     res.sseSetup()
     setInterval(function() {
-    let time = new Date().toLocaleTimeString()
-    res.sseSend(time)
+    //let time = new Date().toLocaleTimeString()
+    //let cpu =os.cpus();
+    let cpu =os.loadavg()
+    res.sseSend(cpu)
   }, 5000)
 
 

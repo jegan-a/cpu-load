@@ -8,8 +8,23 @@ module.exports = function (req, res, next) {
   }
 
   res.sseSend = function(data) {
+    //res.write("data: " + JSON.stringify(calclulateCPUAverage(data)) + "\n\n");
     res.write("data: " + JSON.stringify(data) + "\n\n");
   }
 
   next()
+}
+
+function calclulateCPUAverage(data){
+  console.log(data);
+  let total=0,ideal=0;
+  if(data){
+    for( let {times} of data){
+
+       total += times.user + times.sys+times.ideal;
+       ideal += times.ideal;
+    }
+  }
+
+  return ideal/total;
 }
