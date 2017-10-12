@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactSpeedometer from "react-d3-speedometer";
+import LiveChart from "./LiveChart";
 
 export default class  Speedometer extends Component {
 
@@ -9,7 +10,6 @@ export default class  Speedometer extends Component {
 
   }
   componentDidMount(){
-
     var that = this
     var source = new EventSource("http://localhost:3001/stream");
     source.onmessage= function(e) {
@@ -25,7 +25,10 @@ export default class  Speedometer extends Component {
 
 render(){
 return (
-  <ReactSpeedometer minValue={0} maxValue={100} value={this.state.cpuload}/>
+  <div>
+    <ReactSpeedometer startColor="green" endColor="red" minValue={0} maxValue={100} value={this.state.cpuload}/>
+    <LiveChart></LiveChart>
+  </div>
 )
 }
 }
