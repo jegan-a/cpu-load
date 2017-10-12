@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
 import {scaleTime,scaleLinear} from 'd3-scale';
-import {line} from 'd3-shape';
+import {line,area} from 'd3-shape';
 
-console.log(d3);
-
-export default class  LiveChart extends Component {
+ class  LiveChart extends Component {
 
   constructor(props) {
     super(props);
@@ -13,30 +11,29 @@ export default class  LiveChart extends Component {
 
   }
   componentDidMount(){
-
-    var limit = 60 * 1,
-          duration = 750,
+          var that =this;
+          var limit = 60*1,
+          duration = 700,
           now = new Date(Date.now() - duration)
 
-      var width = 500,
-          height = 200;
+
           var groups = {
             current: {
-                value: 0,
+                value: that.props.value,
                 color: 'orange',
                 data: d3.range(limit).map(function() {
-                    return Math.random()*(50-20+1+20);
+                    return that.props.value;
                 })
             }
         };
 
-        console.log(groups);
+
     var x = scaleTime()
             .domain([now - (limit - 2), now - duration])
-            .range([0, width])
+            .range([0, this.props.width])
             var y = d3.scaleLinear()
                         .domain([0, 100])
-                        .range([height, 0])
+                        .range([this.props.height, 0])
                         var l = line()
                                     .curve(d3.curveBasis)
                                     .x(function(d, i) {
@@ -48,21 +45,25 @@ export default class  LiveChart extends Component {
 
                                 var svg = d3.select('.graph').append('svg')
                                     .attr('class', 'chart')
-                                    .attr('width', width)
-                                    .attr('height', height + 50)
+                                    .attr('width', this.props.width)
+                                    .attr('height', this.props.height + 50)
 
                                 var axis = svg.append('g')
                                     .attr('class', 'x axis')
-                                    .attr('transform', 'translate(0,' + height + ')')
+                                    .attr('transform', 'translate(0,' + this.props.height + ')')
                                     .call(x.axis = d3.axisBottom(x))
 
-                                    console.log(axis);
+                                var yaxis = svg.append('g')
+                                        .attr('class', 'y axis')
+                                         .attr("transform", "translate(30,0)")
+                                        .call(y.axis = d3.axisLeft(y))
+
+
+
                                 var paths = svg.append('g')
 
                                 for (var name in groups) {
                                     var group = groups[name];
-                                    console.log(name);
-                                    console.log(group);
                                     group.path = paths.append('path')
                                         .data([group.data])
                                         .attr('class', name + ' group')
@@ -73,54 +74,45 @@ export default class  LiveChart extends Component {
 
 
 
-                                var tick = function() {
+           function tick() {
             now = new Date()
-
             // Add new values
             for (var name in groups) {
                 var group = groups[name]
-                //group.data.push(group.value) // Real values arrive at irregular intervals
-                group.data.push(20 + Math.random() * 100)
+                group.data.push(that.props.value);
                 group.path.attr('d', l)
             }
-
             // Shift domain
             x.domain([now - (limit - 2) * duration, now - duration])
-
             // Slide x-axis left
-           axis.transition()
+            axis.transition()
                 .duration(duration)
                 .ease(d3.easeBounce)
                 .call(x.axis)
 
 
-            // Slide paths left
+            // slide paths left
             paths.attr('transform', null)
                 .transition()
                 .duration(duration)
                 .ease(d3.easeBounce)
                 .attr('transform', 'translate(' + x(now - (limit - 1) * duration) + ')')
-              //  .each('end', tick)
+                .on("end", tick)
 
-            // Remove oldest data point from each group
-            /*for (var name in groups) {
+                //remove oldest data point from each group
+              for (var name in groups) {
                 var group = groups[name]
                 group.data.shift()
-            }*/
+             }
         }
-
         tick();
-
   }
-
-
-
 
 render(){
 return (
   <div>
   <div className="graph">LiveChart</div>
-  <svg className="charts" width="500" height="300">
+  <svg className="charts" width={this.props.width+100} height={this.props.height+100}>
     <path d={this.state.path} >
 
     </path>
@@ -130,3 +122,15 @@ return (
 )
 }
 }
+
+LiveChart.defaultProps = {
+      width:500,
+      height:350
+
+
+}
+
+
+
+
+export default LiveChart;

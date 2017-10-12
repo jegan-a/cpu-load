@@ -27,7 +27,7 @@ render(){
 return (
   <div>
     <ReactSpeedometer startColor="green" endColor="red" minValue={0} maxValue={100} value={this.state.cpuload}/>
-    <LiveChart></LiveChart>
+    <LiveChart value={this.state.cpuload}></LiveChart>
   </div>
 )
 }
