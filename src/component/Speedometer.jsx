@@ -26,7 +26,7 @@ export default class  Speedometer extends Component {
 render(){
 return (
   <div>
-    <ReactSpeedometer startColor="green" endColor="red" minValue={0} maxValue={100} value={this.state.cpuload}/>
+    <ReactSpeedometer startColor="green" endColor="red" height="200" minValue={0} maxValue={100} value={this.state.cpuload}/>
     <LiveChart value={this.state.cpuload}></LiveChart>
   </div>
 )

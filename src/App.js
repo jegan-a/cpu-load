@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Live CPU Load Monitor</h1>
+          <h1 className="App-title">Realtime System Load</h1>
         </header>
         <p className="App-intro">
           <ReactSpeedometer />
