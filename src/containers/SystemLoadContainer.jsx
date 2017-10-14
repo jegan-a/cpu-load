@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactSpeedometer from "react-d3-speedometer";
-import LiveChart from "./LiveChart";
+import LiveChart from "../components/RealTimeChart";
 
 export default class  Speedometer extends Component {
 
@@ -26,6 +26,7 @@ export default class  Speedometer extends Component {
 render(){
 return (
   <div>
+    <p></p>
     <ReactSpeedometer startColor="green" endColor="red" height="200" minValue={0} maxValue={100} value={this.state.cpuload}/>
     <LiveChart value={this.state.cpuload}></LiveChart>
   </div>

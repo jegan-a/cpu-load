@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import {scaleTime,scaleLinear} from 'd3-scale';
 import {line,area} from 'd3-shape';
 
- class  LiveChart extends Component {
+ class  RealTimeChart extends Component {
 
   constructor(props) {
     super(props);
@@ -123,14 +123,8 @@ return (
 }
 }
 
-LiveChart.defaultProps = {
+RealTimeChart.defaultProps = {
       width:500,
       height:350
-
-
 }
-
-
-
-
-export default LiveChart;
+export default RealTimeChart;

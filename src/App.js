@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import './App.css';
-import ReactSpeedometer from "./component/Speedometer";
+import './styles/app.css';
+import RealtimeContainer from "./containers/SystemLoadContainer";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Realtime System Load</h1>
+      <div className="app">
+        <header className="app-header">
+          <h1 className="app-title">Realtime System Load</h1>
         </header>
-        <p className="App-intro">
-          <ReactSpeedometer />
+        <p className="app-intro">
+          <RealtimeContainer />
         </p>
       </div>
     );
   }
 }
-
 export default App;
