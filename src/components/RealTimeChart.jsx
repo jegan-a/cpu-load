@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import {scaleTime,scaleLinear} from 'd3-scale';
 import {line,area} from 'd3-shape';
 
-const limit = 60,
+const limit = 70,
        duration = 700;
 let    now = new Date(Date.now() - duration);
 
@@ -38,33 +38,40 @@ class  RealTimeChart extends Component {
                 })
             }
         };
-
         var x = getX(this.props.width);
         var y = getY(this.props.height);
         var l = getline(x,y);
-
-                            var svg = d3.select('.graph').append('svg')
+                                    var svg = d3.select('.graph').append('svg')
                                     .attr('class', 'chart')
                                     .attr('width', this.props.width)
                                     .attr('height', this.props.height + 50)
 
-                                var axis = svg.append('g')
+
+
+
+
+                              var parent =   svg.append('g')
+                                .attr('transform', 'translate(' + 20 + ',' + 5 + ')')
+
+                                var xaxis = parent.append('g')
                                     .attr('class', 'x axis')
                                     .attr('transform', 'translate(0,' + this.props.height + ')')
                                     .call(x.axis = d3.axisBottom(x))
 
-                                var yaxis = svg.append('g')
+                                    //console.log(d3.axisBottom(x));
+
+                                var yaxis = parent.append('g')
                                         .attr('class', 'y axis')
-                                         .attr("transform", "translate(30,0)")
+                                        .attr("transform", "translate(2,0)")
                                         .call(y.axis = d3.axisLeft(y))
 
 
 
-                                var paths = svg.append('g')
+                                var paths = parent.append('g')
 
                                 for (var name in groups) {
                                     var group = groups[name];
-                                    group.path = paths.append('path')
+                                        group.path = paths.append('path')
                                         .data([group.data])
                                         .attr('class', name + ' group')
                                         .style('stroke', group.color)
@@ -85,7 +92,7 @@ class  RealTimeChart extends Component {
             // Shift domain
             x.domain([now - (limit - 2) * duration, now - duration])
             // Slide x-axis left
-            axis.transition()
+            xaxis.transition()
                 .duration(duration)
                 .ease(d3.easeBounce)
                 .call(x.axis)
@@ -109,16 +116,16 @@ class  RealTimeChart extends Component {
   }
 
 render(){
+
+
+
 return (
   <div>
-    <div>LiveChart</div>
-
-  <div className="graph"></div>
-
-  <svg className="chart" width={this.props.width} height={this.props.height}>
-    <path d={this.state.path} >
-
-    </path>
+    <div>Live Chart</div>
+    <div className="graph"></div>
+      <svg className="chart" width={this.props.width} height={this.props.height}>
+       <path d={this.state.path} >
+       </path>
   </svg>
  </div>
 
