@@ -3,20 +3,32 @@ import * as d3 from "d3";
 import {scaleTime,scaleLinear} from 'd3-scale';
 import {line,area} from 'd3-shape';
 
- class  RealTimeChart extends Component {
+const limit = 60,
+       duration = 700;
+let    now = new Date(Date.now() - duration);
+
+const  getX = width => scaleTime().domain([now - (limit - 2), now - duration]).range([0, width]);
+
+const  getY = height=> d3.scaleLinear().domain([0, 100]).range([height, 0]);
+
+const getline = (x,y)=> line().curve(d3.curveBasis)
+            .x(function(d, i) {
+                return x(now - (limit - 1 - i) * duration)
+            })
+            .y(function(d) {
+                return y(d)
+            });
+
+
+class  RealTimeChart extends Component {
 
   constructor(props) {
     super(props);
     this.state= {path: ""};
-
   }
+
   componentDidMount(){
           var that =this;
-          var limit = 60*1,
-          duration = 700,
-          now = new Date(Date.now() - duration)
-
-
           var groups = {
             current: {
                 value: that.props.value,
@@ -27,23 +39,11 @@ import {line,area} from 'd3-shape';
             }
         };
 
+        var x = getX(this.props.width);
+        var y = getY(this.props.height);
+        var l = getline(x,y);
 
-    var x = scaleTime()
-            .domain([now - (limit - 2), now - duration])
-            .range([0, this.props.width])
-            var y = d3.scaleLinear()
-                        .domain([0, 100])
-                        .range([this.props.height, 0])
-                        var l = line()
-                                    .curve(d3.curveBasis)
-                                    .x(function(d, i) {
-                                        return x(now - (limit - 1 - i) * duration)
-                                    })
-                                    .y(function(d) {
-                                        return y(d)
-                                    })
-
-                                var svg = d3.select('.graph').append('svg')
+                            var svg = d3.select('.graph').append('svg')
                                     .attr('class', 'chart')
                                     .attr('width', this.props.width)
                                     .attr('height', this.props.height + 50)
@@ -111,8 +111,11 @@ import {line,area} from 'd3-shape';
 render(){
 return (
   <div>
-  <div className="graph">LiveChart</div>
-  <svg className="charts" width={this.props.width+100} height={this.props.height+100}>
+    <div>LiveChart</div>
+
+  <div className="graph"></div>
+
+  <svg className="chart" width={this.props.width} height={this.props.height}>
     <path d={this.state.path} >
 
     </path>
