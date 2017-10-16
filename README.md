@@ -29,10 +29,10 @@ node server/app.js     -  Command to start the server which keeps sending the cp
 
 Open http://localhost:3000/ in browser to see the output. Screen shots attached.
 
-* Please note , since the cpu load is showing almost a constant value, I added a random value (in sse.js) along with the actual cpu load.It helps to show the progress. 
+* Please note , since the cpu load is showing almost a constant value, I added a random value (in sse.js) along with the actual cpu load.It helps to show the progress.
 
 Details
-======
+=======
 
 I have used "Server Sent Events" instead of client side polling .  
 UI creates a event source and keep watching if any data from server .
@@ -43,3 +43,7 @@ Tried to use D3 API only for calculation , but the d3 v4 is tightly coupled.
 Please note , I did not use Redux as there is not much state to manage.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+
+Screenshot
+=============
+![Screenshot](/public/screenshot.png?raw=true "Screenshot")
