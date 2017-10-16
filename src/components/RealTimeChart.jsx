@@ -59,8 +59,7 @@ class  RealTimeChart extends Component {
         var parent = svg.append('g')
                     .attr('transform', 'translate(' + 20 + ',' + 5 + ')');
 
-                    //let xAxis1 =d3.axisBottom(x);
-                    select(this.xAxisElement).call(x.axis = axisBottom(x));
+                    //select(this.xAxisElement).call(x.axis = axisBottom(x));
         var xaxis = parent.append('g')
                     .attr('class', 'x axis')
                     .attr('transform', 'translate(0,' + this.props.height + ')')
@@ -70,7 +69,7 @@ class  RealTimeChart extends Component {
                     .attr('class', 'y axis')
                     .attr("transform", "translate(2,0)")
                     .call(y.axis = axisLeft(y))
-                    select(this.yAxisElement).call(y.axis = axisLeft(y));
+                    //select(this.yAxisElement).call(y.axis = axisLeft(y));
 
 
      var paths =  parent.append('g')
@@ -108,17 +107,6 @@ return (
   <div>
     <div>Live Chart</div>
     <div className="graph"></div>
-      <svg className="chart" width={this.props.width} height={this.props.height}>
-      <g transform="translate(20,5)" >
-           <g class="x axix" transform="translate(0,295)" ref={(el) => { this.xAxisElement = el; }}>
-           </g>
-
-           <g className="y axis" ref={(el) => { this.yAxisElement = el; }} transform="translate(2,0)" fill="none" font-size="10" font-family="sans-serif" text-anchor="end">
-           </g>
-
-
-           </g>
-  </svg>
  </div>
 )
 }
