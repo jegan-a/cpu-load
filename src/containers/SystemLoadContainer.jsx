@@ -15,7 +15,7 @@ export default class  Speedometer extends Component {
      const source = new EventSource("http://localhost:3001/stream");
 
      source.onmessage= function(e) {
-       this.setState({cpuload:JSON.parse(e.data)})
+       this.setState({cpuload:JSON.parse(e.data),errorMessage:""})
      }.bind(this);
 
      source.onerror = function(e) {
