@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import * as d3 from "d3";
 import {scaleTime,scaleLinear} from 'd3-scale';
-import {line,area} from 'd3-shape';
+import {line,curveBasis} from 'd3-shape';
+import {select}from 'd3-selection';
+import {axisBottom,axisLeft} from 'd3-axis';
+import {range} from 'd3-array';
+import {easeBounce} from 'd3-ease';
+
+
+
 import PropTypes from 'prop-types';
 
 const limit = 70,
@@ -10,9 +16,9 @@ let    now = new Date(Date.now() - duration);
 
 const  getX = width => scaleTime().domain([now - (limit - 2), now - duration]).range([0, width]);
 
-const  getY = height=> d3.scaleLinear().domain([0, 100]).range([height, 0]);
+const  getY = height=> scaleLinear().domain([0, 100]).range([height, 0]);
 
-const getline = (x,y)=> line().curve(d3.curveBasis)
+const getline = (x,y)=> line().curve(curveBasis)
             .x(function(d, i) {
                 return x(now - (limit - 1 - i) * duration)
             })
@@ -45,7 +51,7 @@ class  RealTimeChart extends Component {
         var y = getY(this.props.height);
         var l = getline(x,y);
 
-        var svg = d3.select('.graph').append('svg')
+        var svg = select('.graph').append('svg')
                     .attr('class', 'chart')
                     .attr('width', this.props.width)
                     .attr('height', this.props.height + 50)
@@ -56,12 +62,12 @@ class  RealTimeChart extends Component {
         var xaxis = parent.append('g')
                     .attr('class', 'x axis')
                     .attr('transform', 'translate(0,' + this.props.height + ')')
-                    .call(x.axis = d3.axisBottom(x));
+                    .call(x.axis = axisBottom(x));
 
-      var yaxis =  parent.append('g')
+                    parent.append('g')
                     .attr('class', 'y axis')
                     .attr("transform", "translate(2,0)")
-                    .call(y.axis = d3.axisLeft(y))
+                    .call(y.axis = axisLeft(y))
 
      var paths =  parent.append('g')
      var path  =  paths.append('path')
@@ -78,12 +84,12 @@ class  RealTimeChart extends Component {
             path.attr('d', l)
             x.domain([now - (limit - 2) * duration, now - duration]);
             // slide x-axis left
-            xaxis.transition().duration(duration).ease(d3.easeBounce).call(x.axis);
+            xaxis.transition().duration(duration).ease(easeBounce).call(x.axis);
             // slide paths left
             paths.attr('transform', null)
                 .transition()
                 .duration(duration)
-                .ease(d3.easeBounce)
+                .ease(easeBounce)
                 .attr('transform', 'translate(' + x(now - (limit - 1) * duration) + ')')
                 .on("end", tick)
             //remove oldest cpu load
@@ -115,7 +121,7 @@ RealTimeChart.defaultProps = {
       width:500,
       height:350,
       lineColor:'orange',
-      cpuLoads:d3.range(limit).map(function() {
+      cpuLoads:range(limit).map(function() {
           return 0;
       })
 }

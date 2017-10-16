@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import ReactSpeedometer from "react-d3-speedometer";
-import LiveChart from "../components/RealTimeChart";
+import RealTimeChart from "../components/RealTimeChart";
 
 export default class  Speedometer extends Component {
 
   constructor(props) {
     super(props);
-    this.state= {cpuload: 0,errorMessage:""};
+    this.state= {cpuload: 0, errorMessage:""};
 
   }
 
   componentDidMount(){
 
      const source = new EventSource("http://localhost:3001/stream");
+
      source.onmessage= function(e) {
        this.setState({cpuload:JSON.parse(e.data)})
      }.bind(this);
@@ -28,7 +29,7 @@ return (
   <div>
     <p className="error">{this.state.errorMessage}</p>
     <ReactSpeedometer startColor="green" endColor="red"  height={200} minValue={0} maxValue={100} value={this.state.cpuload}/>
-    <LiveChart currentLoad={this.state.cpuload}></LiveChart>
+    <RealTimeChart currentLoad={this.state.cpuload}></RealTimeChart>
   </div>
 )
 }
