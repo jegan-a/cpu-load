@@ -6,28 +6,28 @@ export default class  Speedometer extends Component {
 
   constructor(props) {
     super(props);
-    this.state= {cpuload: 10};
+    this.state= {cpuload: 0,errorMessage:""};
 
   }
+
   componentDidMount(){
-    var that = this
-    var source = new EventSource("http://localhost:3001/stream");
-    source.onmessage= function(e) {
-    var notification = JSON.parse(e.data);
-    that.setState({cpuload:notification})
-    console.log(notification);
-  };
-  source.onerror = function(e) {
-    console.log("EventSource failed.");
-  };
+
+     const source = new EventSource("http://localhost:3001/stream");
+     source.onmessage= function(e) {
+       this.setState({cpuload:JSON.parse(e.data)})
+     }.bind(this);
+
+     source.onerror = function(e) {
+        this.setState({errorMessage:"CPU load Source failed."});
+     }.bind(this);
 
   }
 
 render(){
 return (
   <div>
-    <p></p>
-    <ReactSpeedometer startColor="green" endColor="red"  minValue={0} maxValue={100} value={this.state.cpuload}/>
+    <p className="error">{this.state.errorMessage}</p>
+    <ReactSpeedometer startColor="green" endColor="red"  height={200} minValue={0} maxValue={100} value={this.state.cpuload}/>
     <LiveChart currentLoad={this.state.cpuload}></LiveChart>
   </div>
 )
