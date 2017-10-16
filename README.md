@@ -6,10 +6,15 @@ Software required.
 Start the application
 ======
 In the command-line, please give the following commands.
+
 npm install     - To install all NPM dependencies only for first time
-npm start       - To start the application (client side)  
+
+npm start       - To start the application (client side)
+
 cd server       - change directory to "server"
+
 node app.js     -  Command to start the server which keeps sending the cpu load to server
+
 
 Open http://localhost:3000/ in browser to see the output. Screen shots attached.
 
