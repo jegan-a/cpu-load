@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import {scaleTime,scaleLinear} from 'd3-scale';
 import {line,area} from 'd3-shape';
+import PropTypes from 'prop-types';
 
 const limit = 70,
        duration = 700;
@@ -118,4 +119,12 @@ RealTimeChart.defaultProps = {
           return 0;
       })
 }
+RealTimeChart.propTypes ={
+      width:PropTypes.number,
+      height:PropTypes.number,
+      lineColor:PropTypes.string,
+      cpuLoads:PropTypes.array
+}
+
+
 export default RealTimeChart;
