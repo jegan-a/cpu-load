@@ -1,22 +1,38 @@
 
 
 Software required.  
- Node.js is required . (https://nodejs.org/en/)
+ Node.js, git are required . (https://nodejs.org/en/)
 
-Start the application
-======
-In the command-line, please give the following commands.
+Install the application
+======================
+Please clone the project first using git clone command.
+
+git clone https://github.com/jegan-a/cpu-load.git
+
+cd cpu-load
 
 npm install     - To install all NPM dependencies only for first time
 
+
+Run the application
+======================
+In the command-line, please give the following commands.
+
+
 npm start       - To start the application (client side)
 
-cd server       - change directory to "server"
+To run the server , open a new terminal window and change directory to the project directory
+==================================================================================
 
-node app.js     -  Command to start the server which keeps sending the cpu load to server
+node server/app.js     -  Command to start the server which keeps sending the cpu load to server
 
 
 Open http://localhost:3000/ in browser to see the output. Screen shots attached.
+
+* Please note , since the cpu load is showing almost a constant value, I added a random value (in sse.js) along with the actual cpu load.It helps to show the progress. 
+
+Details
+======
 
 I have used "Server Sent Events" instead of client side polling .  
 UI creates a event source and keep watching if any data from server .

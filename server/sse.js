@@ -28,5 +28,6 @@ function calclulateCPUAverage(data){
   }
   idle =idle / data.length;
   total= total / data.length;
+  // added a random value  since the cpu load is showing as constant . progress is visible now.
   return Math.round(100- idle/total*100)+Math.floor(Math.random() * 6) + 1;
 }
