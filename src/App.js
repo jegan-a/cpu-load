@@ -9,9 +9,9 @@ class App extends Component {
         <header className="app-header">
           <h1 className="app-title">Realtime System Load</h1>
         </header>
-        <p className="app-intro">
+        <div className="app-intro">
           <RealtimeContainer />
-        </p>
+        </div>
       </div>
     );
   }

@@ -27,7 +27,7 @@ export default class  Speedometer extends Component {
 render(){
 return (
   <div>
-    <p className="error">{this.state.errorMessage}</p>
+    <div className="error">{this.state.errorMessage}</div>
     <ReactSpeedometer startColor="green" endColor="red"  height={200} minValue={0} maxValue={100} value={this.state.cpuload}/>
     <RealTimeChart currentLoad={this.state.cpuload}></RealTimeChart>
   </div>

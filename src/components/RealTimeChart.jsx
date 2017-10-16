@@ -106,13 +106,12 @@ return (
     <div>Live Chart</div>
     <div className="graph"></div>
       <svg className="chart" width={this.props.width} height={this.props.height}>
-      <g transform="translate(20,5)">
+      <g transform="translate(20,5)" ref={(el) => { this.parentElement = el; }}>
            <g className="x axix" transform="translate(0,100)" ref={(el) => { this.xAxisElement = el; }}>
            </g>
       </g>
   </svg>
  </div>
-
 )
 }
 }
@@ -125,12 +124,12 @@ RealTimeChart.defaultProps = {
           return 0;
       })
 }
+
 RealTimeChart.propTypes ={
       width:PropTypes.number,
       height:PropTypes.number,
       lineColor:PropTypes.string,
       cpuLoads:PropTypes.array
 }
-
 
 export default RealTimeChart;
