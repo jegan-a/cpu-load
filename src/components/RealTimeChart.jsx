@@ -59,6 +59,8 @@ class  RealTimeChart extends Component {
         var parent = svg.append('g')
                     .attr('transform', 'translate(' + 20 + ',' + 5 + ')');
 
+                    //let xAxis1 =d3.axisBottom(x);
+                    //select(this.xAxisElement).call(x.axis = axisBottom(x));          
         var xaxis = parent.append('g')
                     .attr('class', 'x axis')
                     .attr('transform', 'translate(0,' + this.props.height + ')')
@@ -75,8 +77,7 @@ class  RealTimeChart extends Component {
                  .attr('class', 'current group')
                  .style('stroke', this.props.lineColor)
 
-              //let xAxis1 =d3.axisBottom(x);
-              //d3.select(this.xAxisElement).call(xAxis1)
+
 
            function tick() {
             now = new Date()
