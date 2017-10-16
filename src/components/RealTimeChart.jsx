@@ -24,80 +24,60 @@ class  RealTimeChart extends Component {
 
   constructor(props) {
     super(props);
-    this.state= {path: ""};
+    this.state= {
+          cpuLoads:this.props.cpuLoads
+    };
+  }
+
+  componentWillReceiveProps(nextProps){
+
+    /*this.setState({
+          cpuLoads:this.props.cpuLoads.push(nextProps.currentLoad)
+    })*/
   }
 
   componentDidMount(){
-          var that =this;
-          var groups = {
-            current: {
-                value: that.props.value,
-                color: 'orange',
-                data: d3.range(limit).map(function() {
-                    return that.props.value;
-                })
-            }
-        };
+
+        var that =this;
+        var pathData = this.props.cpuLoads;
         var x = getX(this.props.width);
         var y = getY(this.props.height);
         var l = getline(x,y);
-                                    var svg = d3.select('.graph').append('svg')
-                                    .attr('class', 'chart')
-                                    .attr('width', this.props.width)
-                                    .attr('height', this.props.height + 50)
 
+        var svg = d3.select('.graph').append('svg')
+                    .attr('class', 'chart')
+                    .attr('width', this.props.width)
+                    .attr('height', this.props.height + 50)
 
+        var parent = svg.append('g')
+                    .attr('transform', 'translate(' + 20 + ',' + 5 + ')');
 
+        var xaxis = parent.append('g')
+                    .attr('class', 'x axis')
+                    .attr('transform', 'translate(0,' + this.props.height + ')')
+                    .call(x.axis = d3.axisBottom(x));
 
+      var yaxis =  parent.append('g')
+                    .attr('class', 'y axis')
+                    .attr("transform", "translate(2,0)")
+                    .call(y.axis = d3.axisLeft(y))
 
-                              var parent =   svg.append('g')
-                                .attr('transform', 'translate(' + 20 + ',' + 5 + ')')
+     var paths =  parent.append('g')
+     var path  =  paths.append('path')
+                 .data([pathData])
+                 .attr('class', 'current group')
+                 .style('stroke', this.props.lineColor)
 
-                                var xaxis = parent.append('g')
-                                    .attr('class', 'x axis')
-                                    .attr('transform', 'translate(0,' + this.props.height + ')')
-                                    .call(x.axis = d3.axisBottom(x))
-
-                                    //console.log(d3.axisBottom(x));
-
-                                var yaxis = parent.append('g')
-                                        .attr('class', 'y axis')
-                                        .attr("transform", "translate(2,0)")
-                                        .call(y.axis = d3.axisLeft(y))
-
-
-
-                                var paths = parent.append('g')
-
-                                for (var name in groups) {
-                                    var group = groups[name];
-                                        group.path = paths.append('path')
-                                        .data([group.data])
-                                        .attr('class', name + ' group')
-                                        .style('stroke', group.color)
-                                }
-
-
-
-
+              //let xAxis1 =d3.axisBottom(x);
+              //d3.select(this.xAxisElement).call(xAxis1)
 
            function tick() {
             now = new Date()
-            // Add new values
-            for (var name in groups) {
-                var group = groups[name]
-                group.data.push(that.props.value);
-                group.path.attr('d', l)
-            }
-            // Shift domain
-            x.domain([now - (limit - 2) * duration, now - duration])
-            // Slide x-axis left
-            xaxis.transition()
-                .duration(duration)
-                .ease(d3.easeBounce)
-                .call(x.axis)
-
-
+            pathData.push(that.props.currentLoad);
+            path.attr('d', l)
+            x.domain([now - (limit - 2) * duration, now - duration]);
+            // slide x-axis left
+            xaxis.transition().duration(duration).ease(d3.easeBounce).call(x.axis);
             // slide paths left
             paths.attr('transform', null)
                 .transition()
@@ -105,27 +85,24 @@ class  RealTimeChart extends Component {
                 .ease(d3.easeBounce)
                 .attr('transform', 'translate(' + x(now - (limit - 1) * duration) + ')')
                 .on("end", tick)
-
-                //remove oldest data point from each group
-              for (var name in groups) {
-                var group = groups[name]
-                group.data.shift()
-             }
+            //remove oldest cpu load
+            pathData.shift();
         }
         tick();
   }
 
+
 render(){
-
-
 
 return (
   <div>
     <div>Live Chart</div>
     <div className="graph"></div>
       <svg className="chart" width={this.props.width} height={this.props.height}>
-       <path d={this.state.path} >
-       </path>
+      <g transform="translate(20,5)">
+           <g className="x axix" transform="translate(0,100)" ref={(el) => { this.xAxisElement = el; }}>
+           </g>
+      </g>
   </svg>
  </div>
 
@@ -135,6 +112,10 @@ return (
 
 RealTimeChart.defaultProps = {
       width:500,
-      height:350
+      height:350,
+      lineColor:'orange',
+      cpuLoads:d3.range(limit).map(function() {
+          return 0;
+      })
 }
 export default RealTimeChart;
